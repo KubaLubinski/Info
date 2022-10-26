@@ -31,7 +31,7 @@ namespace Info.Models
 
         [Display(Name = "Autor komentarza:")]
         public string? Id { get; set; }
-        [ForeignKey("id")]
+        [ForeignKey("Id")]
         public virtual AppUser? User { get; set; }
 
     }
