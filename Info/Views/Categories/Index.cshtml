@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Info.Models.Category>
+
+@{
+    ViewData["Title"] = "Lista kategorii";
+}
+
+<h1 class="oswald text-primary">Lista kategorii</h1>
+
+<p>
+    <a asp-action="Create">Nowa kategoria</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Icon)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Active)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Display)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                <i class="bi-@item.Icon"></i><br />
+                @Html.DisplayFor(modelItem => item.Icon)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Display)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CategoryId">Edycja</a> |
+                <a asp-action="Details" asp-route-id="@item.CategoryId">Szczegóły</a> |
+                <a asp-action="Delete" asp-route-id="@item.CategoryId">Usuń</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
