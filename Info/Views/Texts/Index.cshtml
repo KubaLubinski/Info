@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Info.Models.Text>
+@{
+    ViewData["Title"] = "Lista tekstów";
+}
+
+<div class="container">
+    <div class="row">
+        <!--wyszukiwarka-->
+        <div class="d-none d-md-block col-md-12 col-xl-3">
+            <div class="card mb-2">
+                <div class="card-body">
+                    Wyszukiwarka
+                </div>
+            </div>
+        </div>
+
+
+        <!--lista tekstow-->
+            <div class="col-xl-9">
+                @foreach(var item in Model)
+                {
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="oswald text-primary">@item.Title</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img src="~/img/mini/1.jpg" alt="Opis" class="img-fluid" />
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title text-success">@item.User.FullName</h5>
+                                <p class="card-text fst-italic">@item.Summary</p>
+                                <p class="card-text"><small class="text-muted">Data opublikowania: </small></p>
+                                <div class="position-relative">
+                                    <a href="#" class="btn btn-outline-primary position-absolute bottom-0 end-0">Czytaj więcej>>></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                }
+                
+            </div>
+
+
+    </div>
+
+
+</div>
