@@ -89,24 +89,58 @@ namespace Info.Controllers
         // GET: Texts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            TextWithOpinions textWithOpinions = new TextWithOpinions();
+
             if (id == null || _context.Texts == null)
             {
                 return NotFound();
             }
 
-            var text = await _context.Texts
-                .Include(t => t.Category)
-                .Include(t => t.User)
-                .FirstOrDefaultAsync(m => m.TextId == id);
-            if (text == null)
+            textWithOpinions.SelectedText = await _context.Texts
+            .Include(t => t.Category)
+            .Include(t => t.User)
+            .Include(t => t.Opinions)
+            .ThenInclude(c => c.User)
+            .Where(t => t.Active == true)
+            .FirstOrDefaultAsync(m => m.TextId == id);
+
+            if (textWithOpinions.SelectedText == null)
             {
                 return NotFound();
             }
 
-            return View(text);
+            textWithOpinions.ReadingTime = (int)Math.Ceiling((double) 
+            textWithOpinions.SelectedText.Content.Length / 1400);
+
+            textWithOpinions.CommentsNumber = _context.Opinions
+            .Where(x => x.TextId == id)
+            .Count();
+
+            if (textWithOpinions.CommentsNumber != 0)
+            {
+                textWithOpinions.OpinionsNumber = _context.Opinions.Where(o => 
+
+                 o.TextId == id).Where(x => x.Rating != null).Count();
+
+                    if (textWithOpinions.OpinionsNumber != 0)
+                                {
+                                    textWithOpinions.AverageScore = (float)(textWithOpinions.OpinionsNumber >
+                                    0 ? _context.Opinions.Where(o =>  o.TextId == id).Where(x => x.Rating 
+                                    != null).Average(x => (int)x.Rating) : 0);
+                                }
+            }
+
+            
+
+            textWithOpinions.Description = Variaty.Phrase("komentarz", "komentarze", 
+            "komentarzy", textWithOpinions.CommentsNumber);
+
+
+            return View(textWithOpinions);
         }
 
         // GET: Texts/Create
+        [Authorize(Roles = "admin, author")]
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name");
@@ -116,6 +150,7 @@ namespace Info.Controllers
         // POST: Texts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "admin, author")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TextId,Title,Summary,Keywords,Content,Active,CategoryId")] Text text, IFormFile? picture)
@@ -156,6 +191,7 @@ namespace Info.Controllers
         }
 
         // GET: Texts/Edit/5
+        [Authorize(Roles = "admin, author")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Texts == null)
@@ -187,6 +223,7 @@ namespace Info.Controllers
         // POST: Texts/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "admin, author")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int textid, [Bind("TextId,Title,Summary,Keywords,Content,Graphic,Active,AddedDate,CategoryId,Id")] Info.Models.Text text, IFormFile? picture)
@@ -242,6 +279,7 @@ namespace Info.Controllers
         }
 
         // GET: Texts/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Texts == null)
@@ -262,6 +300,7 @@ namespace Info.Controllers
         }
 
         // POST: Texts/Delete/5
+        [Authorize(Roles = "admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
