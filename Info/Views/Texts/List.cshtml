@@ -85,6 +85,10 @@
                         asp-action="Edit" asp-route-id="@item.TextId"><i class="bi-pen-fill" arialabel="Edycja tekstu"></i></a>
                     <a class="btn btn-outline-danger rounded-circle my-1" title="Usuwanie" 
                         asp-action="Delete" asp-route-id="@item.TextId"><i class="bi-trash" arialabel="Usuwanie tekstu"></i></a>
+                    <a class="btn btn-outline-info rounded-circle my-1" title="Opinie"
+                   asp-action="Index" asp-controller="Opinions" asp-route-id="@item.TextId">
+                        <i class="bi-chat-left-text" aria-label="Opinie o tekście"></i>
+                    </a>
             </td>
         </tr>
 }

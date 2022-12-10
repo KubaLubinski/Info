@@ -1,19 +1,16 @@
 ﻿@model IEnumerable<Info.Models.Opinion>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Opinie o tekstach";
 }
 
-<h1>Index</h1>
+<h1 class="oswald text-primary">Opinie użytkowników</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table" id="opinie">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Comment)
+                @Html.DisplayNameFor(model => model.Text.Title)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AddedDate)
@@ -25,7 +22,7 @@
                 @Html.DisplayNameFor(model => model.Text)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.User)
+                @Html.DisplayNameFor(model => model.User.FullName)
             </th>
             <th></th>
         </tr>
@@ -34,7 +31,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Comment)
+                @Html.DisplayFor(modelItem => item.Text.Title)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AddedDate)
@@ -46,14 +43,63 @@
                 @Html.DisplayFor(modelItem => item.Text.Content)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
+                @Html.DisplayFor(modelItem => item.User.FullName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.OpinionId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.OpinionId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.OpinionId">Delete</a>
+                    <a class="btn btn-outline-primary rounded-circle my-1" title="Szczegóły" 
+                   asp-action="Details" asp-route-id="@item.OpinionId">
+                        <i class="bi-eye" 
+                       aria-label="Treść opinii"></i>
+                    </a>
+                    <a class="btn btn-outline-warning rounded-circle my-1" title="Edycja" 
+                   asp-action="Edit" asp-route-id="@item.OpinionId">
+                        <i class="bi-pen-fill" 
+                       aria-label="Edycja opinii"></i>
+                    </a>
+                    <a class="btn btn-outline-danger rounded-circle my-1" title="Usuwanie" 
+                   asp-action="Delete" asp-route-id="@item.OpinionId">
+                        <i class="bi-trash" 
+                       aria-label="Usuwanie opinii"></i>
+                    </a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+@section Scripts{
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/
+ dt-1.13.1/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+        $('#opinie').DataTable({
+        language: {
+        "decimal": "",
+        "emptyTable": "Brak danych do wyświetlenia",
+        "info": "Pozycje od _START_ do _END_ z _TOTAL_ rekordów",
+        "infoEmpty": "Pozycji 0 z 0 dostępnych",
+        "infoFiltered": "(filtrowanie z _MAX_ dostępnych pozycji)"
+        "infoPostFix": "",
+        "thoustands": "",
+        "lengthMenu": "Pokaż _MENU_ pozycji",
+        "loadingRecords": "Ładowanie..",
+        "processing": "Przetwarzanie...",
+        "search": "Wyszukaj",
+        "zeroRecords": "Nie znaleziono danych",
+        "paginate": {
+            "first": "Pierwsza",
+            "last": "Ostatnia",
+            "next": "Następna",
+            "previous": "Poprzednia"
+        },
+        "aria": {
+            "sortAsceding": ": sortuję kolumnę rosnąco",
+            "sortDescending": ": sortuję kolumnę malejąco"
+        }
+       
+        }
+        }
+        });
+        });
+    </script>
+}
+

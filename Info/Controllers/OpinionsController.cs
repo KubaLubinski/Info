@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Info.Data;
 using Info.Models;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Info.Controllers
 {
@@ -21,13 +22,24 @@ namespace Info.Controllers
         }
 
         // GET: Opinions
-        public async Task<IActionResult> Index()
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Index(int? id)
         {
-            var applicationDbContext = _context.Opinions.Include(o => o.Text).Include(o => o.User);
-            return View(await applicationDbContext.ToListAsync());
+            if (id == null)
+            {
+                var applicationDbContext = _context.Opinions.Include(o => o.Text).Include(o => o.User);
+                return View(await applicationDbContext.ToListAsync());
+            }
+            else
+            {
+                var appDbContext = _context.Opinions.Include(o => o.Text).Include(o => o.User).Where(o => o.TextId == id);
+                return View(await appDbContext.ToListAsync());
+            }
+
         }
 
         // GET: Opinions/Details/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Opinions == null)
@@ -48,6 +60,7 @@ namespace Info.Controllers
         }
 
         // GET: Opinions/Create
+        [Authorize]
         public IActionResult Create(int? id)
         {
             if (id == null)
@@ -70,6 +83,7 @@ namespace Info.Controllers
         // POST: Opinions/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("OpinionId,Comment,Rating,TextId")] Opinion opinion)
@@ -88,6 +102,7 @@ namespace Info.Controllers
             return View(opinion);
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePartial([Bind("OpinionId,Comment,Rating,TextId")] Opinion opinion)
@@ -107,6 +122,7 @@ namespace Info.Controllers
         }
 
         // GET: Opinions/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Opinions == null)
@@ -127,6 +143,7 @@ namespace Info.Controllers
         // POST: Opinions/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("OpinionId,Comment,AddedDate,Rating,TextId,Id")] Opinion opinion)
@@ -162,6 +179,7 @@ namespace Info.Controllers
         }
 
         // GET: Opinions/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Opinions == null)
@@ -182,6 +200,7 @@ namespace Info.Controllers
         }
 
         // POST: Opinions/Delete/5
+        [Authorize(Roles = "admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

@@ -50,6 +50,10 @@
                                                 <a class=" nav-link text-dark" asp-area="" asp-controller="Texts"
                                                 asp-action="List"> Lista tekstów</a>
                                             </li>
+                                            <li>
+                                                <a class=" nav-link text-dark" asp-area="" asp-controller="Opinions"
+                                       asp-action="Index">Lista recenzji</a>
+                                            </li>
                                         }
                                         @if (User.IsInRole("author"))
                                         {
