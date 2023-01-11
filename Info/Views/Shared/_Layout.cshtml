@@ -18,7 +18,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Info</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/graphic/logo.png" alt="Portal InfoInfo" height="30"/></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -26,13 +26,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Texts" asp-action="Index">Teksty</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         @{
                             if (User.IsInRole("admin") || User.IsInRole("author"))
@@ -67,6 +61,13 @@
                             }
                         }
                     </ul>
+
+                    <form method="get" class="d-flex" role="search" asp-controller="Texts" asp-action="Index" asp-route-PageNumber="1">
+                        <input class="form-control me-2" type="search" id="Fraza" name="Fraza" placeholder="Szukany ciąg" aria-label="Search">
+                        <button class="btn btn-outline-primary" type="submit">Szukaj</button>
+
+                    </form>
+
                     <partial name="_LoginPartial" />
                 </div>
             </div>
@@ -79,8 +80,12 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - Info - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="container-fluid bg-back pt-3 pb-2 text-center">
+            InfoInfo - Portal informacyjny studentów kierunku Informatyka SWPW w Płocku -
+            &copy; @DateTime.Now.Year
+            <p>
+                <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-info text-decoration-none">Polityka prywatności</a>
+            </p>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
