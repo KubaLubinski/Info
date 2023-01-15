@@ -2,14 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Info.Models;
-using static Humanizer.In;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.SignalR;
 using static System.Net.Mime.MediaTypeNames;
 using System.Numerics;
-using Humanizer.Localisation;
-using Humanizer;
 using Info.Data;
 using System.Runtime.Intrinsics.Arm;
 using System.Threading;
@@ -31,6 +28,7 @@ namespace Info.Data
                     SeedCategoris(dbContext);
                     SeedTexts(dbContext);
                     SeedOpinions(dbContext);
+                    SeedFirmy(dbContext);
                 }
         }
 
@@ -250,5 +248,18 @@ namespace Info.Data
                 dbContext.SaveChanges();
             }
         } //koniec treści opinii
+
+        private static void SeedFirmy(ApplicationDbContext dbContext)
+        {
+            if (!dbContext.Firmy.Any())
+            {
+                var fir = new List<Firma>
+                {
+                    new Firma{ Nazwa = "CompuMedia", PelnaNazwa = "Agencja Medialna CompuMedia", Miejscowosc = "Płock", KodPocztowy = "09-400", Ulica = "Tumska 12", Telefon = "242670963", Mail = "agencja@compumedia.pl" }
+                };
+                dbContext.AddRange(fir);
+                dbContext.SaveChanges();
+            }
+        } //koniec danych kategorii
     }
 }

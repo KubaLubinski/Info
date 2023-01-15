@@ -1,0 +1,20 @@
+﻿@model Info.Models.Firma
+
+@{
+    ViewData["Title"] = "Wizytówka";
+}
+
+<h1>Wizytówka firmy CompuMedia</h1>
+
+<div class="alert alert-dark fw-semibold" role="alert">
+    <p>@Model.PelnaNazwa</p>
+    <p>@Model.Ulica</p>
+    <p>@Model.KodPocztowy @Model.Miejscowosc</p>
+    <p>e-mail: @Model.Mail</p>
+</div>
+<div class="text-end">
+    <p class="fst-italic fw-semibold">Zapraszamy do współpracy</p>
+</div>
+
+
+

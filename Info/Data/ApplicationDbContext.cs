@@ -14,6 +14,7 @@ namespace Info.Data
         public DbSet<Text>? Texts { get; set; }
         public DbSet<Opinion>? Opinions { get; set; }
         public DbSet<AppUser>? AppUsers { get; set; }
+        public DbSet<Firma>? Firmy { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
